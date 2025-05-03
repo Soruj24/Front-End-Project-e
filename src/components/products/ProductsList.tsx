@@ -6,14 +6,42 @@ import { useDebounce } from "@/hooks/useDebounce";
 const ProductsList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = useDebounce(searchTerm, 500);
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 12;
 
-  const { data: products, isLoading, error } = useGetProductsQuery(); // Remove the search parameter
+  // Server-side search and pagination
+  const { data: response, isLoading, error } = useGetProductsQuery({
+    search: debouncedSearch,
+    limit: productsPerPage,
+    skip: (currentPage - 1) * productsPerPage
+  });
 
-  // Filter products locally
-  const filteredProducts = products?.filter(product =>
-    product.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-    product.description.toLowerCase().includes(debouncedSearch.toLowerCase())
-  );
+  const products = response?.products || [];
+  const totalItems = response?.total || 0;
+
+  // Calculate total pages using totalItems from API
+  const totalPages = Math.ceil(totalItems / productsPerPage);
+
+  // Pagination handlers
+  const handleCurrentChange = (pageNumber: number) => setCurrentPage(pageNumber);
+  const handlePreviousChange = () => currentPage > 1 && setCurrentPage(currentPage - 1);
+  const handleNextChange = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
+  const handleFirstPage = () => setCurrentPage(1);
+  const handleLastPage = () => setCurrentPage(totalPages);
+
+  const getVisiblePageNumbers = () => {
+    const visiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(visiblePages / 2));
+    const endPage = Math.min(totalPages, startPage + visiblePages - 1);
+
+    if (endPage - startPage < visiblePages - 1) {
+      startPage = Math.max(1, endPage - visiblePages + 1);
+    }
+
+    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+  };
+
+  const visiblePageNumbers = getVisiblePageNumbers();
 
   return (
     <div className="p-4">
@@ -29,15 +57,65 @@ const ProductsList = () => {
       {error && <p>Something went wrong.</p>}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {filteredProducts && filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => (
-            <ProductCard key={product.id.toString()} product={{ ...product, id: product.id.toString() }} />
+        {products && products.length > 0 ? (
+          products.map((product) => (
+            <ProductCard
+              key={product.id?.toString() ?? ''}
+              product={{
+                ...product,
+                id: product.id?.toString() ?? ''
+              }}
+            />
           ))
         ) : (
           !isLoading && !error && (
             <p className="col-span-full text-center text-gray-500">No products found.</p>
           )
         )}
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="my-3 text-center">
+        <button
+          disabled={currentPage === 1}
+          onClick={handleFirstPage}
+          className="mx-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
+        >
+          First Page
+        </button>
+        <button
+          onClick={handlePreviousChange}
+          disabled={currentPage === 1}
+          className="mx-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
+        >
+          Previous
+        </button>
+        {visiblePageNumbers.map((pageNumber) => (
+          <button
+            key={pageNumber}
+            onClick={() => handleCurrentChange(pageNumber)}
+            className={`mx-2 px-2 py-2 rounded-md transition-colors ${currentPage === pageNumber
+              ? "bg-blue-700 text-white font-bold"
+              : "bg-blue-500 text-white hover:bg-blue-600"
+              }`}
+          >
+            {pageNumber}
+          </button>
+        ))}
+        <button
+          onClick={handleNextChange}
+          disabled={currentPage === totalPages}
+          className="mx-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
+        >
+          Next
+        </button>
+        <button
+          disabled={currentPage === totalPages}
+          onClick={handleLastPage}
+          className="mx-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
+        >
+          Last Page
+        </button>
       </div>
     </div>
   );

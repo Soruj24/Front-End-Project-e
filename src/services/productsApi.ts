@@ -20,14 +20,22 @@ export const productApi = createApi({
     baseQuery: fetchBaseQuery({ baseUrl: 'https://dummyjson.com/' }),
     tagTypes: ['Products'],
     endpoints: (build) => ({
-        // Get all products
-        getProducts: build.query<Product[], void>({
-            query: () => 'products',
-            transformResponse: (response: { products: Product[] }) => response.products,
+        // Get all products (with optional search and pagination)
+        getProducts: build.query<{products: Product[], total: number, skip: number, limit: number}, { search?: string; limit?: number; skip?: number } | void>({
+            query: (params) => {
+                let url = 'products';
+                const queryParams: string[] = [];
+                if (params?.search) queryParams.push(`q=${encodeURIComponent(params.search)}`);
+                if (params?.limit) queryParams.push(`limit=${params.limit}`);
+                if (params?.skip) queryParams.push(`skip=${params.skip}`);
+                if (queryParams.length > 0) url += `/search?${queryParams.join('&')}`;
+                return url;
+            },
+            // Remove transformResponse to keep the full response
             providesTags: (result) =>
-                result
+                result?.products
                     ? [
-                        ...result.map(({ id }) => ({ type: 'Products', id }) as const),
+                        ...result.products.map(({ id }) => ({ type: 'Products', id }) as const),
                         { type: 'Products', id: 'LIST' },
                     ]
                     : [{ type: 'Products', id: 'LIST' }],
