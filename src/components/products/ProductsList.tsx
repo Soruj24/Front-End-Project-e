@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useGetProductsQuery } from "@/services/productsApi";
 import ProductCard from "./ProductCard";
 import { useDebounce } from "@/hooks/useDebounce";
+import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine } from "lucide-react";
 
 const ProductsList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -111,20 +112,20 @@ const ProductsList = () => {
       </div>
 
       {/* Pagination Controls */}
-      <div className="my-3 text-center">
+      <div className="mt-4 flex  text-center">
         <button
           disabled={currentPage === 1}
           onClick={handleFirstPage}
           className="mx-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
         >
-          First Page
+          <ArrowLeftToLine />
         </button>
         <button
           onClick={handlePreviousChange}
           disabled={currentPage === 1}
           className="mx-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
         >
-          Previous
+          <ArrowLeft />
         </button>
         {visiblePageNumbers.map((pageNumber) => (
           <button
@@ -144,14 +145,14 @@ const ProductsList = () => {
           disabled={currentPage === totalPages}
           className="mx-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
         >
-          Next
+          <ArrowRight />
         </button>
         <button
           disabled={currentPage === totalPages}
           onClick={handleLastPage}
           className="mx-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
         >
-          Last Page
+          <ArrowRightToLine />
         </button>
       </div>
     </div>
