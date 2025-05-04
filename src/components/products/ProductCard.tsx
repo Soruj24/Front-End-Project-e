@@ -40,9 +40,8 @@ const ProductCard = ({ product }: { product: Product }) => {
           <div className="mt-2">
             <div className="flex items-center gap-2 text-sm">
               <span
-                className={`w-2 h-2 rounded-full ${
-                  product.stock > 0 ? "bg-green-500" : "bg-red-500"
-                }`}
+                className={`w-2 h-2 rounded-full ${product.stock > 0 ? "bg-green-500" : "bg-red-500"
+                  }`}
               />
               {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
             </div>

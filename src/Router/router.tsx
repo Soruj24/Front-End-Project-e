@@ -3,16 +3,14 @@ import App from "@/App";
 import Home from "@/page/Home";
 import CategoryPage from "@/page/CategoryPage";
 import ProductDetails from "@/page/ProductDetails";
+import Cart from "@/page/Cart";
+import Checkout from "@/page/Checkout";
+import OrderConfirmation from "@/page/OrderConfirmation";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: (
-      <div className="text-center text-3xl text-red-400">
-        Page Not Found 404
-      </div>
-    ),
     children: [
       {
         path: "/",
@@ -25,6 +23,18 @@ const router = createBrowserRouter([
       {
         path: "/product/:id",
         element: <ProductDetails />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
+      },
+      {
+        path: "/checkout",
+        element: <Checkout />,
+      },
+      {
+        path: "/order-confirmation",
+        element: <OrderConfirmation />,
       },
     ],
   },

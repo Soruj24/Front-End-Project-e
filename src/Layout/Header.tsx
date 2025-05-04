@@ -19,12 +19,14 @@ import { Badge } from "@/components/ui/badge";
 import { ShoppingCart, Menu, Search } from "lucide-react";
 import { useState } from "react";
 import Profile from "@/components/Profile";
+import { useSelector } from "react-redux";
+import { RootState } from "@/app/store";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
 
-  const cartItems = 3;
+  const cartItems = useSelector((state: RootState) => state.cart.items.length);
 
   const navLinks = [
     { name: "Home", path: "/" },
@@ -132,12 +134,14 @@ const Header = () => {
           <Button variant="ghost" size="icon" asChild>
             <Link to="/cart" className="relative">
               <ShoppingCart className="h-5 w-5" />
-              <Badge
-                variant="destructive"
-                className="absolute -top-1 -right-1 h-5 w-5 justify-center text-[12px] leading-none"
-              >
-                {cartItems}
-              </Badge>
+              {cartItems > 0 && (
+                <Badge
+                  variant="destructive"
+                  className="absolute -top-1 -right-1 h-5 w-5 justify-center text-[12px] leading-none"
+                >
+                  {cartItems}
+                </Badge>
+              )}
             </Link>
           </Button>
 
