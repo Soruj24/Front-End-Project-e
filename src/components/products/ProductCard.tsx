@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
+import { Link } from "react-router-dom";
 
 interface Product {
   thumbnail: string | undefined;
@@ -47,7 +48,9 @@ const ProductCard = ({ product }: { product: Product }) => {
             </div>
           </div>
         </CardContent>
-        <Button>Product Details</Button>
+        <Button asChild>
+          <Link to={`/product/${product.id}`}>Product Details</Link>
+        </Button>
       </Card>
     </div>
   );

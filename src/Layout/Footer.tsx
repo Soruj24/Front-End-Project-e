@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 
 const Footer = () => {
   return (
-    <footer className="bg-background mt-auto sm:px-10 px-4 py-8 border-t border-muted">
+    <footer className="bg-background w-full sm:px-10 px-4 py-8 border-t border-muted">
       <div className="py-8">
         <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-8">
           {/* Company Info */}

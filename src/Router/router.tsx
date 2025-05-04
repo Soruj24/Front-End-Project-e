@@ -2,15 +2,16 @@ import { createBrowserRouter } from "react-router-dom";
 import App from "@/App";
 import Home from "@/page/Home";
 import CategoryPage from "@/page/CategoryPage";
+import ProductDetails from "@/page/ProductDetails";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     errorElement: (
-      <p className="text-center text-3xl text-red-400">
+      <div className="text-center text-3xl text-red-400">
         Page Not Found 404
-      </p>
+      </div>
     ),
     children: [
       {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path: "/category/:category",
         element: <CategoryPage />,
+      },
+      {
+        path: "/product/:id",
+        element: <ProductDetails />,
       },
     ],
   },
