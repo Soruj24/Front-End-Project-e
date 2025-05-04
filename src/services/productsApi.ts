@@ -9,6 +9,11 @@ export interface Product {
     images: string;
     brand: string;
     stock: number;
+    discountPercentage: number;
+    thumbnail: string;
+    createdAt: string;
+    updatedAt: string;
+
     rating: {
         rate: number;
         count: number;

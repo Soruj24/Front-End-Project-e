@@ -1,20 +1,25 @@
 import { createBrowserRouter } from "react-router-dom";
 import App from "@/App";
 import Home from "@/page/Home";
+import CategoryPage from "@/page/CategoryPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     errorElement: (
-      <div className="text-center text-3xl text-red-400">
+      <p className="text-center text-3xl text-red-400">
         Page Not Found 404
-      </div>
+      </p>
     ),
     children: [
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/category/:category",
+        element: <CategoryPage />,
       },
     ],
   },

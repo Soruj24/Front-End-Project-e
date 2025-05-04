@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Button } from "../ui/button";
 
 interface Product {
+  thumbnail: string | undefined;
   id: string;
   title: string;
   images: string;
@@ -25,7 +26,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         </CardHeader>
         <CardContent>
           <img
-            src={product.images}
+            src={product.thumbnail}
             alt={product.title}
             className="h-[200px] object-cover rounded mb-4 w-full"
           />
@@ -46,7 +47,7 @@ const ProductCard = ({ product }: { product: Product }) => {
             </div>
           </div>
         </CardContent>
-        <Button>Add To Cart</Button>
+        <Button>Product Details</Button>
       </Card>
     </div>
   );
