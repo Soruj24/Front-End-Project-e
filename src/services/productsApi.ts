@@ -21,7 +21,7 @@ export const productApi = createApi({
     tagTypes: ['Products'],
     endpoints: (build) => ({
         // Get all products (with optional search and pagination)
-        getProducts: build.query<{products: Product[], total: number, skip: number, limit: number}, { search?: string; limit?: number; skip?: number } | void>({
+        getProducts: build.query<{ products: Product[], total: number, skip: number, limit: number }, { search?: string; limit?: number; skip?: number } | void>({
             query: (params) => {
                 let url = 'products';
                 const queryParams: string[] = [];

@@ -11,20 +11,27 @@ const ProductsList = () => {
   const productsPerPage = 12;
 
   // Server-side search and pagination
-  const { data: response, isLoading, error } = useGetProductsQuery({
+  const {
+    data: response,
+    isLoading,
+    error,
+  } = useGetProductsQuery({
     search: debouncedSearch,
     limit: productsPerPage,
-    skip: (currentPage - 1) * productsPerPage
+    skip: (currentPage - 1) * productsPerPage,
   });
 
   let products = response?.products || [];
-  
+
   // Apply client-side price sorting
   products = [...products].sort((a, b) => {
-    switch(sortOption) {
-      case "price-low": return a.price - b.price;
-      case "price-high": return b.price - a.price;
-      default: return 0;
+    switch (sortOption) {
+      case "price-low":
+        return a.price - b.price;
+      case "price-high":
+        return b.price - a.price;
+      default:
+        return 0;
     }
   });
 
@@ -34,9 +41,12 @@ const ProductsList = () => {
   const totalPages = Math.ceil(totalItems / productsPerPage);
 
   // Pagination handlers
-  const handleCurrentChange = (pageNumber: number) => setCurrentPage(pageNumber);
-  const handlePreviousChange = () => currentPage > 1 && setCurrentPage(currentPage - 1);
-  const handleNextChange = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
+  const handleCurrentChange = (pageNumber: number) =>
+    setCurrentPage(pageNumber);
+  const handlePreviousChange = () =>
+    currentPage > 1 && setCurrentPage(currentPage - 1);
+  const handleNextChange = () =>
+    currentPage < totalPages && setCurrentPage(currentPage + 1);
   const handleFirstPage = () => setCurrentPage(1);
   const handleLastPage = () => setCurrentPage(totalPages);
 
@@ -49,7 +59,10 @@ const ProductsList = () => {
       startPage = Math.max(1, endPage - visiblePages + 1);
     }
 
-    return Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
+    return Array.from(
+      { length: endPage - startPage + 1 },
+      (_, i) => startPage + i
+    );
   };
 
   const visiblePageNumbers = getVisiblePageNumbers();
@@ -79,21 +92,22 @@ const ProductsList = () => {
       {error && <p>Something went wrong.</p>}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {products && products.length > 0 ? (
-          products.map((product) => (
-            <ProductCard
-              key={product.id?.toString() ?? ''}
-              product={{
-                ...product,
-                id: product.id?.toString() ?? ''
-              }}
-            />
-          ))
-        ) : (
-          !isLoading && !error && (
-            <p className="col-span-full text-center text-gray-500">No products found.</p>
-          )
-        )}
+        {products && products.length > 0
+          ? products.map((product) => (
+              <ProductCard
+                key={product.id?.toString() ?? ""}
+                product={{
+                  ...product,
+                  id: product.id?.toString() ?? "",
+                }}
+              />
+            ))
+          : !isLoading &&
+            !error && (
+              <p className="col-span-full text-center text-gray-500">
+                No products found.
+              </p>
+            )}
       </div>
 
       {/* Pagination Controls */}
@@ -116,10 +130,11 @@ const ProductsList = () => {
           <button
             key={pageNumber}
             onClick={() => handleCurrentChange(pageNumber)}
-            className={`mx-2 px-2 py-2 rounded-md transition-colors ${currentPage === pageNumber
-              ? "bg-blue-700 text-white font-bold"
-              : "bg-blue-500 text-white hover:bg-blue-600"
-              }`}
+            className={`mx-2 px-2 py-2 rounded-md transition-colors ${
+              currentPage === pageNumber
+                ? "bg-blue-700 text-white font-bold"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
           >
             {pageNumber}
           </button>

@@ -1,9 +1,11 @@
-import ProductsList from "./components/products/ProductsList";
+import { Outlet } from "react-router-dom";
+import Footer from "./Layout/Footer";
 
 function App() {
   return (
     <>
-      <ProductsList />
+      <Outlet />
+      <Footer />
     </>
   );
 }
