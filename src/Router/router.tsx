@@ -6,7 +6,11 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    errorElement: <div>Oops! Something went wrong.</div>,
+    errorElement: (
+      <div className="text-center text-3xl text-red-400">
+        Page Not Found 404
+      </div>
+    ),
     children: [
       {
         path: "/",

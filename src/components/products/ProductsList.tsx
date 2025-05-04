@@ -52,23 +52,6 @@ const ProductsList = () => {
   const handleFirstPage = () => setCurrentPage(1);
   const handleLastPage = () => setCurrentPage(totalPages);
 
-  const getVisiblePageNumbers = () => {
-    const visiblePages = 5;
-    let startPage = Math.max(1, currentPage - Math.floor(visiblePages / 2));
-    const endPage = Math.min(totalPages, startPage + visiblePages - 1);
-
-    if (endPage - startPage < visiblePages - 1) {
-      startPage = Math.max(1, endPage - visiblePages + 1);
-    }
-
-    return Array.from(
-      { length: endPage - startPage + 1 },
-      (_, i) => startPage + i
-    );
-  };
-
-  const visiblePageNumbers = getVisiblePageNumbers();
-
   return (
     <div className="p-4">
       <div className="flex gap-4 mb-4">
