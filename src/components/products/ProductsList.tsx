@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useGetProductsQuery } from "@/services/productsApi";
 import ProductCard from "./ProductCard";
 import { useDebounce } from "@/hooks/useDebounce";
-import { ArrowLeft, ArrowLeftToLine, ArrowRight, ArrowRightToLine } from "lucide-react";
+
+import Pagination from "../Pagination";
 
 const ProductsList = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -112,49 +113,15 @@ const ProductsList = () => {
       </div>
 
       {/* Pagination Controls */}
-      <div className="mt-4 flex  text-center">
-        <button
-          disabled={currentPage === 1}
-          onClick={handleFirstPage}
-          className="mx-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
-        >
-          <ArrowLeftToLine />
-        </button>
-        <button
-          onClick={handlePreviousChange}
-          disabled={currentPage === 1}
-          className="mx-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
-        >
-          <ArrowLeft />
-        </button>
-        {visiblePageNumbers.map((pageNumber) => (
-          <button
-            key={pageNumber}
-            onClick={() => handleCurrentChange(pageNumber)}
-            className={`mx-2 px-2 py-2 rounded-md transition-colors ${
-              currentPage === pageNumber
-                ? "bg-blue-700 text-white font-bold"
-                : "bg-blue-500 text-white hover:bg-blue-600"
-            }`}
-          >
-            {pageNumber}
-          </button>
-        ))}
-        <button
-          onClick={handleNextChange}
-          disabled={currentPage === totalPages}
-          className="mx-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
-        >
-          <ArrowRight />
-        </button>
-        <button
-          disabled={currentPage === totalPages}
-          onClick={handleLastPage}
-          className="mx-2 px-2 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors disabled:opacity-50"
-        >
-          <ArrowRightToLine />
-        </button>
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={handleCurrentChange}
+        onPreviousChange={handlePreviousChange}
+        onNextChange={handleNextChange}
+        onFirstPage={handleFirstPage}
+        onLastPage={handleLastPage}
+      />
     </div>
   );
 };
